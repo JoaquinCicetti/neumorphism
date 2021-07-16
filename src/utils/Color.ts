@@ -7,10 +7,11 @@ export type RGBAColor = {
     a?: number;
 };
 
-export type HSLColor = {
+export type HSLAColor = {
     h: number;
     s: number;
     l: number;
+    a?: number;
 };
 
 /**
@@ -25,7 +26,7 @@ export class Color {
     ) {}
 
     static fromRGBA(color: RGBAColor): Color {
-        return new Color(color.r, color.g, color.b, color.a ?? 255);
+        return new Color(color.r, color.g, color.b, color.a ?? 1);
     }
 
     static fromHEX(hex: string): Color {
@@ -40,7 +41,7 @@ export class Color {
         );
     }
 
-    static fromHSL(h: number, s: number, l: number): Color {
+    static fromHSLA(h: number, s: number, l: number, a?: number): Color {
         // Must be fractions of 1
         const saturation = s / 100;
         const lightness = l / 100;
@@ -83,14 +84,14 @@ export class Color {
         g = Math.round((g + m) * 255);
         b = Math.round((b + m) * 255);
 
-        return new Color(r, g, b, 255);
+        return new Color(r, g, b, a ?? 1);
     }
 
     get hex(): string {
         let r = this.r.toString(16);
         let g = this.g.toString(16);
         let b = this.b.toString(16);
-        let a = this.a.toString(16);
+        let a = (this.a * 255).toString(16);
 
         if (r.length === 1) r = '0' + r;
         if (g.length === 1) g = '0' + g;
@@ -125,7 +126,7 @@ export class Color {
         };
     }
 
-    get hsl(): HSLColor {
+    get hsla(): HSLAColor {
         const r = this.r / 255;
         const g = this.g / 255;
         const b = this.b / 255;
@@ -170,44 +171,50 @@ export class Color {
     }
 
     get complementary(): Color {
-        const { h, s, l } = this.hsl;
-        return Color.fromHSL(h + 180, s, l);
+        const { h, s, l, a } = this.hsla;
+        return Color.fromHSLA(h + 180, s, l, a);
+    }
+
+    opacity(opacity: number): Color {
+        validateRange(opacity, 0, 1);
+
+        return new Color(this.r, this.g, this.b, opacity);
     }
 
     lighten(percent: number): Color {
         validateRange(percent, 0, 100);
 
-        const { h, s } = this.hsl;
-        const l = Math.min(100, this.hsl.l + percent);
+        const { h, s, a } = this.hsla;
+        const l = Math.min(100, this.hsla.l + percent);
 
-        return Color.fromHSL(h, s, l);
+        return Color.fromHSLA(h, s, l, a);
     }
 
     darken(percent: number): Color {
         validateRange(percent, 0, 100);
 
-        const { h, s } = this.hsl;
-        const l = Math.max(0, this.hsl.l - percent);
+        const { h, s, a } = this.hsla;
+        const l = Math.max(0, this.hsla.l - percent);
 
-        return Color.fromHSL(h, s, l);
+        return Color.fromHSLA(h, s, l, a);
     }
 
     saturate(percent: number): Color {
         validateRange(percent, 0, 100);
 
-        const { h, l } = this.hsl;
-        const s = Math.min(100, this.hsl.s + percent);
+        const { h, l, a } = this.hsla;
+        const s = Math.min(100, this.hsla.s + percent);
 
-        return Color.fromHSL(h, s, l);
+        return Color.fromHSLA(h, s, l, a);
     }
 
     desaturate(percent: number): Color {
         validateRange(percent, 0, 100);
 
-        const { h, l } = this.hsl;
-        const s = Math.max(0, this.hsl.s - percent);
+        const { h, l, a } = this.hsla;
+        const s = Math.max(0, this.hsla.s - percent);
 
-        return Color.fromHSL(h, s, l);
+        return Color.fromHSLA(h, s, l, a);
     }
 
     static validateRGBA(color: unknown): asserts color is RGBAColor {
@@ -225,7 +232,22 @@ export class Color {
         validateRange(r, 0, 255);
         validateRange(g, 0, 255);
         validateRange(b, 0, 255);
-        validateRange(a, 0, 255);
+        validateRange(a, 0, 1);
+    }
+
+    static validateHSLA(color: unknown): asserts color is HSLAColor {
+        validateWithKey('h', color);
+        validateWithKey('s', color);
+        validateWithKey('l', color);
+        const { h, s, l } = color;
+
+        validateNumber(h);
+        validateNumber(s);
+        validateNumber(l);
+
+        validateRange(h, 0, 255);
+        validateRange(s, 0, 100);
+        validateRange(l, 0, 100);
     }
 
     static linearPickerFromHSL(saturation: number, lightness: number, alpha: number, amount: number): Array<RGBAColor> {
@@ -233,7 +255,7 @@ export class Color {
 
         return [...new Array(amount)].map((_: any, index: number) => {
             const hue = index * huedelta;
-            return Color.fromHSL(hue, saturation, lightness).rgba;
+            return Color.fromHSLA(hue, saturation, lightness).rgba;
         });
     }
 }

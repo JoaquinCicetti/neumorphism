@@ -12,7 +12,7 @@ interface RangeInputProps {
     onChange: (value: number) => void;
 }
 export const RangeInput: React.FC<RangeInputProps> = (props) => {
-    const { value, max, min, step } = props;
+    const { value, max, min, step = 1 } = props;
     const { theme } = useTheme();
 
     const onChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -26,16 +26,14 @@ export const RangeInput: React.FC<RangeInputProps> = (props) => {
 
     const containerStyles = {
         borderColor: Color.fromRGBA(theme.brand).shortHex,
-        '--val': `"${value}"`
     }
 
     const inputStyles = {
         boxShadow: invertedBoxShadow,
         background: Color.fromRGBA(theme.background).shortHex,
-        '--bg': Color.fromRGBA(theme.background).shortHex,
+        '--bg': Color.fromRGBA(theme.text).shortHex,
         '--boxShadow': boxShadow
     };
-
 
     return <div className='rangeInput' style={containerStyles}>
         <input
@@ -43,9 +41,9 @@ export const RangeInput: React.FC<RangeInputProps> = (props) => {
             onChange={onChange}
             value={value}
             style={inputStyles}
-            step={step ?? 1}
             max={max}
             min={min}
+            step={step}
         />
     </div>
 };

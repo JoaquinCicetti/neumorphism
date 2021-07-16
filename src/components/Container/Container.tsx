@@ -6,12 +6,14 @@ import { generateShadow } from '../../utils/colorGeneration';
 import './Container.scss';
 
 interface ContainerProps {
-    elevation: number;
-    inverted?: boolean;
+    elevation: number
+    inverted?: boolean
+    className?: string
+    isFake?: boolean
 }
 
 export const Container: React.FC<ContainerProps> = (props) => {
-    const { elevation, inverted } = props;
+    const { elevation, inverted, isFake } = props;
     const { theme } = useTheme();
 
     const bgColor = Color.fromRGBA(theme.background);
@@ -35,11 +37,19 @@ export const Container: React.FC<ContainerProps> = (props) => {
         }
     });
 
+    const className = props.className
+        ? `container ${props.className}`
+        : 'container'
+
     return (
-        <animated.div style={animatedStyles} className={'container'}>
-            <span className="code">
-                <b>box-shadow:</b> {to}
-            </span>
+        <animated.div style={animatedStyles} className={className}>
+            {
+                isFake
+                    ? <span className="code">
+                        <b>box-shadow:</b> {to}
+                    </span>
+                    : props.children
+            }
         </animated.div>
     );
 };

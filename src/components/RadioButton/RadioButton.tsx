@@ -48,31 +48,39 @@ const Option: React.FC<OptionProps> = (props) => {
     const { theme } = useTheme();
 
     const selectedShadow = generateShadow({ color: theme.background, elevation: 0 });
-    const unselectedShadow = generateShadow({ color: theme.background, elevation: 2 });
+    const unselectedShadow = generateShadow({ color: theme.background, elevation: 1 });
 
     const activeColor = Color.fromRGBA(theme.brand).shortHex;
     const inactiveColor = Color.fromRGBA(theme.text).shortHex;
 
+    const config = {
+        duration: 200
+    }
     const animatedStyles = useSpring({
-        boxShadow: isSelected ? selectedShadow : unselectedShadow,
-        borderRadius: isSelected ? '20px' : '50px',
-        color: isSelected ? activeColor : inactiveColor,
-        fontWeight: isSelected ? 500 : 400,
+        to: {
+            boxShadow: isSelected ? selectedShadow : unselectedShadow,
+            color: isSelected ? activeColor : inactiveColor,
+        },
+        config
+    });
+
+    const activeIndicatorStyles = useSpring({
+        to: {
+            width: isSelected ? '32px' : '0px',
+            borderColor: activeColor
+        },
+        config
     });
 
     const id = `radiobutton-${value}`;
-    
+
     return (
         <animated.label style={animatedStyles} className={'option'} htmlFor={id}>
             <input id={id} type="radio" aria-label={value} value={value} name={name} />
-            {value}
+            {isSelected && <animated.div style={activeIndicatorStyles} className='activeIndicator' />}
+            <span>
+                {value}
+            </span>
         </animated.label>
     );
 };
-
-// const color = new Color(174, 174, 192, 1)
-// const selectedShadow = generateShadow({color: color.rgba, elevation: 0})
-// //'0px 0px 0px rgba(255, 255, 255, 0.5), 0px 0px 0px rgba(174, 174, 192, 0.2), inset -0px -0px 0px rgba(0, 0, 0, 0.1), inset 0px 0px 0px #FFFFFF';
-
-// const unselectedShadow = generateShadow({color: color.rgba, elevation: 2})
-// //'-5px -5px 5px rgba(255, 255, 255, 0.5), 5px 5px 10px rgba(174, 174, 192, 0.2), inset -2px -2px 4px rgba(0, 0, 0, 0.1), inset 2px 2px 4px #FFFFFF';

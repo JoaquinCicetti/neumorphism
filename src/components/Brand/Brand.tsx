@@ -3,6 +3,7 @@ import { useSpring, animated } from 'react-spring';
 import { useTheme } from '../../theme/useTheme';
 import { Color, RGBAColor } from '../../utils/Color';
 import {
+    generateFlatBackground,
     generateShadow,
     generateConvexBackground,
     Shapes,
@@ -11,14 +12,13 @@ import {
 import './Brand.scss';
 
 interface BrandProps {
-    elevation: number;
     shape: string;
 }
 
 const getBackground = (shape: string, bgColor: RGBAColor): string => {
     switch (shape) {
         case Shapes.FLAT:
-            return Color.fromRGBA(bgColor).shortHex;
+            return generateFlatBackground(bgColor);
 
         case Shapes.CONVEX:
             return generateConvexBackground(bgColor);
@@ -35,28 +35,20 @@ const getBackground = (shape: string, bgColor: RGBAColor): string => {
 };
 
 export const Brand: React.FC<BrandProps> = (props) => {
-    const { elevation, shape } = props;
+    const { shape } = props;
     const { theme } = useTheme();
 
     const brandColor = Color.fromRGBA(theme.brand);
     const bgColor = Color.fromRGBA(theme.background);
 
-    const from = generateShadow({ color: bgColor.rgba, elevation: 0 });
-    const to = generateShadow({ color: bgColor.rgba, elevation });
+    const boxShadow = generateShadow({ color: bgColor.rgba, elevation: 2 });
 
     const background = getBackground(shape, bgColor.rgba);
     const animatedStyles = useSpring({
-        from: {
-            background,
-            boxShadow: from,
-            color: brandColor.shortHex,
-            borderColor: brandColor.shortHex,
-        },
         to: {
             background,
-            boxShadow: to,
+            boxShadow,
             color: brandColor.shortHex,
-            borderColor: brandColor.shortHex,
         },
     });
     return (

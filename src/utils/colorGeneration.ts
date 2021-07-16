@@ -47,7 +47,7 @@ type BackgroundGradientGenerator = (brandColor: RGBAColor) => string;
 export const generateShadow: ShadowGenerator = (params) => {
     const { color, elevation, inverted } = params;
 
-    const lighterColor = Color.fromRGBA(color).lighten(20).shortHex;
+    const lighterColor = Color.fromRGBA(color).lighten(10).shortHex;
     const darkerColor = Color.fromRGBA(color).darken(10).shortHex;
 
     const offsetL = -1 * Math.abs(elevation) * PX_UNIT;
@@ -81,9 +81,15 @@ export const generateBackgroundColor: BackgroundColorGenerator = (rgbaColor) => 
     return color.lighten(50).desaturate(40).rgba;
 };
 
+export const generateFlatBackground: BackgroundGradientGenerator = (rgbaColor) => {
+    const hexColor = Color.fromRGBA(rgbaColor).shortHex;
+
+    return `linear-gradient(0deg, ${hexColor}, ${hexColor})`;
+};
+
 export const generateConvexBackground: BackgroundGradientGenerator = (rgbaColor) => {
     const from = Color.fromRGBA(rgbaColor).darken(10);
-    const to = Color.fromRGBA(rgbaColor).lighten(20);
+    const to = Color.fromRGBA(rgbaColor).lighten(10);
 
     return `linear-gradient(-45deg, ${from.shortHex}, ${to.shortHex}`;
 };

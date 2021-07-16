@@ -4,7 +4,6 @@
     margin: 1em 0;
     padding: 0.6rem;
     border-radius: 50px;
-    min-width: 200px;
     min-height: 40px;
     user-select: none;
 
@@ -17,19 +16,31 @@
         position: relative;
         padding: 0.6rem 1.2rem;
         margin: 0 .2rem;
+        border-radius: 20px;
+        min-width: 30px;
+
+        &::after {
+            position: absolute;
+            content: '';
+            height: 1px;
+            bottom: 0;
+        }
+
         input[type='radio'] {
             position: absolute;
             opacity: 0;
             cursor: pointer;
             height: 0;
             width: 0;
+
         }
-        &:checked::after {
-            content: '';
+
+        .activeIndicator {
+            height: 0;
             position: absolute;
-            width: 50%;
-            bottom: 0;
-            border: 1px solid red;
+            bottom: 1px;
+            border-width: 1px;
+            border-style: solid;
         }
     }
 }

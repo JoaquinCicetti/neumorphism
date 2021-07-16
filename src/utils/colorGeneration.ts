@@ -17,7 +17,7 @@
 import { Color, RGBAColor } from './Color';
 
 const PX_UNIT = 2;
-const BLUR_SCALE = 2;
+const BLUR_SCALE = 1.5;
 
 interface Params {
     elevation: number;
@@ -47,8 +47,8 @@ type BackgroundGradientGenerator = (brandColor: RGBAColor) => string;
 export const generateShadow: ShadowGenerator = (params) => {
     const { color, elevation, inverted } = params;
 
-    const lighterColor = Color.fromRGBA(color).lighten(10).shortHex;
-    const darkerColor = Color.fromRGBA(color).darken(10).shortHex;
+    const lighterColor = Color.fromRGBA(color).lighten(10).opacity(0.6).hex;
+    const darkerColor = Color.fromRGBA(color).darken(10).opacity(0.6).hex;
 
     const offsetL = -1 * Math.abs(elevation) * PX_UNIT;
     const offsetD = Math.abs(elevation) * PX_UNIT;
@@ -64,7 +64,7 @@ export const generateShadow: ShadowGenerator = (params) => {
 export const generateReadableFontColor: FontColorGenerator = (rgbaColor) => {
     const bgColor = Color.fromRGBA(rgbaColor).complementary;
 
-    if (bgColor.hsl.l <= 50) {
+    if (bgColor.hsla.l <= 50) {
         return bgColor.lighten(50).rgba;
     }
 
@@ -74,7 +74,7 @@ export const generateReadableFontColor: FontColorGenerator = (rgbaColor) => {
 export const generateBackgroundColor: BackgroundColorGenerator = (rgbaColor) => {
     const color = Color.fromRGBA(rgbaColor).complementary;
 
-    if (color.hsl.l >= 50) {
+    if (color.hsla.l >= 50) {
         return color.darken(50).desaturate(40).rgba;
     }
 

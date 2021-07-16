@@ -53,7 +53,8 @@ export const Brand: React.FC<BrandProps> = (props) => {
     });
     return (
         <animated.div className="brand" style={animatedStyles}>
-            MY BRAND
+            <h3 className='title'>Neumorphism</h3>
+            <small className='subtitle'>0xfafafa</small>
         </animated.div>
     );
 };

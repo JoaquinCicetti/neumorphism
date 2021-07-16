@@ -1,8 +1,18 @@
 .brand {
   border-width: 0px;
   border-style: solid;
-  font-size: 2rem;
   border-radius: 3rem;
-  padding: 1.5rem 3rem;
-  margin: 2rem auto;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  .subtitle {
+    font-size: 1.4rem;
+  }
 }

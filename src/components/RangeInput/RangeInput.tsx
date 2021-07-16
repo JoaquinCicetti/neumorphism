@@ -21,7 +21,7 @@ export const RangeInput: React.FC<RangeInputProps> = (props) => {
         props.onChange(newValue);
     };
 
-    const boxShadow = generateShadow({ color: theme.background, elevation: 1, inverted: false })
+    const boxShadow = generateShadow({ color: theme.background, elevation: 2, inverted: false })
     const invertedBoxShadow = generateShadow({ color: theme.background, elevation: 1, inverted: true })
 
     const containerStyles = {

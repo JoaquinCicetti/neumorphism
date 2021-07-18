@@ -9,9 +9,9 @@ import {
     Shapes,
     generateConcaveBackground,
 } from '../../utils/colorGeneration';
-import './Brand.scss';
+import './Logo.scss';
 
-interface BrandProps {
+interface LogoProps {
     shape: string;
 }
 
@@ -34,11 +34,11 @@ const getBackground = (shape: string, bgColor: RGBAColor): string => {
     return '';
 };
 
-export const Brand: React.FC<BrandProps> = (props) => {
+export const Logo: React.FC<LogoProps> = (props) => {
     const { shape } = props;
     const { theme } = useTheme();
 
-    const brandColor = Color.fromRGBA(theme.brand);
+    const accentColor = Color.fromRGBA(theme.accent);
     const bgColor = Color.fromRGBA(theme.background);
 
     const boxShadow = generateShadow({ color: bgColor.rgba, elevation: 2 });
@@ -48,11 +48,11 @@ export const Brand: React.FC<BrandProps> = (props) => {
         to: {
             background,
             boxShadow,
-            color: brandColor.shortHex,
+            color: accentColor.shortHex,
         },
     });
     return (
-        <animated.div className="brand" style={animatedStyles}>
+        <animated.div className="logo" style={animatedStyles}>
             <h3 className='title'>Neumorphism</h3>
             <small className='subtitle'>0xfafafa</small>
         </animated.div>

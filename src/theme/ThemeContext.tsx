@@ -2,35 +2,35 @@ import React from 'react';
 import { Color, RGBAColor } from '../utils/Color';
 import { generateBackgroundColor, generateReadableFontColor } from '../utils/colorGeneration';
 
-type ThemeGenerator = (color: string) => Theme;
+type ThemeGenerator = (color: RGBAColor) => Theme;
 export interface Theme {
     background: RGBAColor;
     text: RGBAColor;
-    brand: RGBAColor;
+    accent: RGBAColor;
 }
 
-const generateTheme: ThemeGenerator = (hexColor) => {
-    const defaultBrand: RGBAColor = Color.fromHEX(hexColor).rgba;
-    const defaultBackground: RGBAColor = generateBackgroundColor(defaultBrand);
+const generateTheme: ThemeGenerator = (color) => {
+    const defaultAccent: RGBAColor = color;
+    const defaultBackground: RGBAColor = generateBackgroundColor(defaultAccent);
     const defaultText: RGBAColor = generateReadableFontColor(defaultBackground);
 
     return {
         background: defaultBackground,
         text: defaultText,
-        brand: defaultBrand,
+        accent: defaultAccent,
     };
 };
 
-const defaultTheme: Theme = generateTheme('#92354c');
+const defaultTheme: Theme = generateTheme(Color.fromHEX('#92354c').rgba);
 
 export interface ThemeContext {
     theme: Theme;
-    setBrand: (hexColor: string) => void;
+    setAccent: (newColor: RGBAColor) => void;
 }
 
 const defaultContext: ThemeContext = {
     theme: defaultTheme,
-    setBrand: (hexColor: string) => console.warn('Context not intialized'),
+    setAccent: (newColor: RGBAColor) => console.warn('Context not intialized'),
 };
 
 export const Context = React.createContext<ThemeContext>(defaultContext);
@@ -38,15 +38,15 @@ export const Context = React.createContext<ThemeContext>(defaultContext);
 export const Provider: React.FC = (props) => {
     const [theme, setTheme] = React.useState<Theme>(defaultTheme);
 
-    const setBrand = (hexColor: string) => {
-        const newTheme = generateTheme(hexColor);
+    const setAccent = (newColor: RGBAColor) => {
+        const newTheme = generateTheme(newColor);
 
         setTheme(newTheme);
     };
 
     const value = {
         theme,
-        setBrand,
+        setAccent,
     };
     return <Context.Provider value={value}>{props.children}</Context.Provider>;
 };

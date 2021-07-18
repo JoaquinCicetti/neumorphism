@@ -16,7 +16,7 @@
 
 import { Color, RGBAColor } from './Color';
 
-const PX_UNIT = 2;
+const PX_UNIT = 1;
 const BLUR_SCALE = 1.5;
 
 interface Params {
@@ -37,7 +37,7 @@ type ShadowGenerator = (params: Params) => string;
 type FontColorGenerator = (backgroundColor: RGBAColor) => RGBAColor;
 type BackgroundColorGenerator = (brandColor: RGBAColor) => RGBAColor;
 type BackgroundGradientGenerator = (brandColor: RGBAColor) => string;
-
+type ColorFromTextGenerator = (text: string) => RGBAColor;
 /**
  *
  * Neumorphism is based on shadows
@@ -75,10 +75,10 @@ export const generateBackgroundColor: BackgroundColorGenerator = (rgbaColor) => 
     const color = Color.fromRGBA(rgbaColor).complementary;
 
     if (color.hsla.l >= 50) {
-        return color.darken(50).desaturate(40).rgba;
+        return color.darken(50).desaturate(30).rgba;
     }
 
-    return color.lighten(50).desaturate(40).rgba;
+    return color.lighten(50).desaturate(30).rgba;
 };
 
 export const generateFlatBackground: BackgroundGradientGenerator = (rgbaColor) => {
@@ -99,4 +99,17 @@ export const generateConcaveBackground: BackgroundGradientGenerator = (rgbaColor
     const to = Color.fromRGBA(rgbaColor).lighten(20);
 
     return `linear-gradient(135deg, ${from.shortHex}, ${to.shortHex}`;
+};
+
+export const generateColorFromString: ColorFromTextGenerator = (text) => {
+    const intHash = Array.from(text).reduce((hash: number, char: string) => {
+        return char.charCodeAt(0) + ((hash << 5) - hash);
+    }, 0);
+
+    const r = (intHash >> 8) & 0xff;
+    const g = (intHash >> 16) & 0xff;
+    const b = (intHash >> 24) & 0xff;
+    const generatedColor = new Color(r, g, b, 255);
+
+    return generatedColor.rgba;
 };

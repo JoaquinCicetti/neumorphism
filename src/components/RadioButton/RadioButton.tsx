@@ -21,7 +21,7 @@ export const RadioButton: React.FC<RadioButtonProps> = (props) => {
     };
 
     const containerStyles = {
-        boxShadow: generateShadow({ color: theme.background, elevation: 2, inverted: true }),
+        boxShadow: generateShadow({ color: theme.background, elevation: 4, inverted: true }),
     };
 
     // for grouping
@@ -48,20 +48,16 @@ const Option: React.FC<OptionProps> = (props) => {
     const { theme } = useTheme();
 
     const selectedShadow = generateShadow({ color: theme.background, elevation: 0 });
-    const unselectedShadow = generateShadow({ color: theme.background, elevation: 1 });
+    const unselectedShadow = generateShadow({ color: theme.background, elevation: 3 });
 
-    const activeColor = Color.fromRGBA(theme.brand).shortHex;
+    const activeColor = Color.fromRGBA(theme.accent).shortHex;
     const inactiveColor = Color.fromRGBA(theme.text).shortHex;
 
-    const config = {
-        duration: 200
-    }
     const animatedStyles = useSpring({
         to: {
             boxShadow: isSelected ? selectedShadow : unselectedShadow,
             color: isSelected ? activeColor : inactiveColor,
         },
-        config
     });
 
     const activeIndicatorStyles = useSpring({
@@ -69,7 +65,6 @@ const Option: React.FC<OptionProps> = (props) => {
             width: isSelected ? '32px' : '0px',
             borderColor: activeColor
         },
-        config
     });
 
     const id = `radiobutton-${value}`;

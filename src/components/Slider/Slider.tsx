@@ -2,16 +2,16 @@ import React from 'react';
 import { useTheme } from '../../theme/useTheme';
 import { Color } from '../../utils/Color';
 import { generateShadow } from '../../utils/colorGeneration';
-import './RangeInput.scss';
+import './Slider.scss';
 
-interface RangeInputProps {
+interface SliderProps {
     max: number;
     min: number;
     step?: number;
     value: number;
     onChange: (value: number) => void;
 }
-export const RangeInput: React.FC<RangeInputProps> = (props) => {
+export const Slider: React.FC<SliderProps> = (props) => {
     const { value, max, min, step = 1 } = props;
     const { theme } = useTheme();
 
@@ -21,11 +21,11 @@ export const RangeInput: React.FC<RangeInputProps> = (props) => {
         props.onChange(newValue);
     };
 
-    const boxShadow = generateShadow({ color: theme.background, elevation: 2, inverted: false })
-    const invertedBoxShadow = generateShadow({ color: theme.background, elevation: 1, inverted: true })
+    const boxShadow = generateShadow({ color: theme.background, elevation: 1, inverted: false })
+    const invertedBoxShadow = generateShadow({ color: theme.background, elevation: 2, inverted: true })
 
     const containerStyles = {
-        borderColor: Color.fromRGBA(theme.brand).shortHex,
+        borderColor: Color.fromRGBA(theme.accent).shortHex,
     }
 
     const inputStyles = {
@@ -35,7 +35,7 @@ export const RangeInput: React.FC<RangeInputProps> = (props) => {
         '--boxShadow': boxShadow
     };
 
-    return <div className='rangeInput' style={containerStyles}>
+    return <div className='slider' style={containerStyles}>
         <input
             type='range'
             onChange={onChange}

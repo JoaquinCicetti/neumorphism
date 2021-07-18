@@ -1,4 +1,4 @@
-.shadowGenerator {
+.playground {
     min-height: 100%;
     width: 100vw;
     display: flex;
@@ -8,12 +8,11 @@
     box-sizing: border-box;
     padding: 1rem;
 
-    .field {
-        display: flex;
-        align-items: center;
+    p {
+        margin: .2rem 0;
 
-        label {
-            margin-right: 1rem;
+        b {
+            margin-right: .5em;
         }
     }
 }

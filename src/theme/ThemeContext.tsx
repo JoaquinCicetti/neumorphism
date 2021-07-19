@@ -21,7 +21,7 @@ const generateTheme: ThemeGenerator = (color) => {
     };
 };
 
-const defaultTheme: Theme = generateTheme(Color.fromHEX('#92354c').rgba);
+const defaultTheme: Theme = generateTheme(Color.fromHEX('#a2dcbd').rgba);
 
 export interface ThemeContext {
     theme: Theme;
@@ -42,6 +42,11 @@ export const Provider: React.FC = (props) => {
         const newTheme = generateTheme(newColor);
 
         setTheme(newTheme);
+
+        if (document instanceof Document) {
+            document.querySelector('meta[name="theme-color"]')
+                ?.setAttribute('content', '#fa0000');
+        }
     };
 
     const value = {

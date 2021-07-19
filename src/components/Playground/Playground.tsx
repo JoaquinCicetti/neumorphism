@@ -9,27 +9,29 @@ import { RadioButton } from '../RadioButton/RadioButton';
 import { Slider } from '../Slider/Slider';
 import { TextInput } from '../TextInput/TextInput';
 import './Playground.scss';
-import useTimeout from '../../utils/useTimeout';
+import { NumericInput } from '../NumericInput/NumericInput';
 
 const defaultShape = shapes[2];
 export const Playground = () => {
-    const { theme, setAccent: setBrand } = useTheme();
+    const { theme, setAccent } = useTheme();
 
     const [elevation, setElevation] = React.useState<number>(1);
     const [shape, setShape] = React.useState<string>(defaultShape);
-    const [text, setText] = React.useState<string>('Some text...');
+    const [text, setText] = React.useState<string>('type something..');
 
     const onElevationChange = (newElevation: number) => {
         setElevation(newElevation);
     };
 
     const onColorChange = (newColor: RGBAColor) => {
-        setBrand(Color.fromRGBA(newColor).rgba);
+        setAccent(Color.fromRGBA(newColor).rgba);
     };
 
     const onTextChange = (newText: string): void => {
         setText(newText)
 
+        const newAccent: RGBAColor = generateColorFromString(newText)
+        setAccent(newAccent)
 
     }
 
@@ -43,12 +45,6 @@ export const Playground = () => {
     };
 
 
-    const updateTheme = (newText: string): void => {
-        const newAccent: RGBAColor = generateColorFromString(newText)
-        setBrand(newAccent)
-    }
-
-    useTimeout(updateTheme, text, 300)
 
     return (
         <div className="playground" style={appStyles}>
@@ -81,10 +77,18 @@ export const Playground = () => {
                 <br /><br />
 
                 <p>
+                    <b>Numeric input</b>
+                    <small>- Type to generate a new theme -</small>
+                </p>
+                <NumericInput value={elevation} min={-6} max={8} onNumberChange={onElevationChange} />
+
+                <br /><br />
+
+                <p>
                     <b>Slider</b>
                     <small>- Change the elevation of the container shadows -</small>
                 </p>
-                <Slider step={1} min={0} max={5} value={elevation} onChange={onElevationChange} />
+                <Slider step={1} min={0} max={8} value={elevation} onChange={onElevationChange} />
 
                 <br /><br />
 

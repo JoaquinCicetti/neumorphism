@@ -1,12 +1,13 @@
 .slider {
     position: relative;
-    padding: .5rem 1.2rem;
+    padding: .5rem 0;
 
     input[type="range"] {
         -webkit-appearance: none;
         width: 100%;
         border-radius: 16px;
         height: 24px;
+        box-sizing: border-box;
         padding: 0 .5rem;
 
         &:focus,

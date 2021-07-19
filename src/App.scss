@@ -1,13 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap');
 
+
+
 html,
 body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 100%;
     -webkit-tap-highlight-color: transparent;
     font-family: 'Mitr', sans-serif;
+    min-height: 100%;
+    overscroll-behavior-y: none;
+    flex: 1;
+    display: flex;
+    margin: 0;
+    padding: 0;
 }
 
 .row {

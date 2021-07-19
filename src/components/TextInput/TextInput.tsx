@@ -1,13 +1,11 @@
 import React from 'react';
 import { useTheme } from '../../theme/useTheme';
 import { Color } from '../../utils/Color';
-import { generateColorFromString, generateShadow } from '../../utils/colorGeneration';
+import { generateShadow } from '../../utils/colorGeneration';
 import './TextInput.scss';
 
-interface TextInputProps extends React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-> {
+interface TextInputProps {
+    value: string
     onTextChange: (value: string) => void;
 }
 export const TextInput: React.FC<TextInputProps> = (props) => {
@@ -18,7 +16,6 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
         const target = event.target as HTMLInputElement;
         const newValue = target.value
 
-        generateColorFromString(newValue)
         onTextChange(newValue);
     };
 
@@ -27,6 +24,7 @@ export const TextInput: React.FC<TextInputProps> = (props) => {
         elevation: 4,
         inverted: true
     })
+
     const inputStyles = {
         boxShadow,
         background: Color.fromRGBA(theme.background).shortHex,

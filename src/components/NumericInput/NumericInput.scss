@@ -1,0 +1,56 @@
+.numericInput {
+    position: relative;
+    margin: .5rem 0;
+
+    input {
+        -webkit-appearance: none;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 1rem;
+        font-weight: 500;
+        border: none;
+        height: 48px;
+        border-radius: 24px;
+        text-align: center;
+
+        &:focus,
+        &:hover {
+            outline: none;
+        }
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+
+    button {
+        -webkit-appearance: none;
+        border: none;
+        position: absolute;
+        border-radius: 32px;
+        height: 32px;
+        width: 32px;
+        bottom: 8px;
+        cursor: pointer;
+
+        &:focus,
+        &:hover {
+            outline: none;
+        }
+
+        &.left {
+            left: 8px;
+        }
+
+        &.right {
+            right: 8px;
+        }
+
+        svg {
+            vertical-align: middle;
+            text-align: center;
+        }
+    }
+}
